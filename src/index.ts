@@ -2,7 +2,8 @@ import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import cors from 'cors';
 import express from 'express';
-
+import dotenv from 'dotenv'
+dotenv.config()
 async function Init() {
     const app = express()
     app.use(express.json())
@@ -12,9 +13,9 @@ async function Init() {
             say(name:String):String
         }`,
         resolvers: {
-            Query:{
-                hellow:()=>`hey there im graphql`,
-                say:(_,{name}:{name:String})=>`hey ${name}`
+            Query: {
+                hellow: () => `hey there im graphql`,
+                say: (_, { name }: { name: String }) => `hey ${name}`
             }
         }
     })
