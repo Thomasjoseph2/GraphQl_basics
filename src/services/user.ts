@@ -14,6 +14,9 @@ export interface getUserTokenPayload {
     password: string
 }
 class UserService {
+    public static getUserByID(id: string) {
+        return prismaClient.user.findUnique({ where: { id } })
+    }
     private static getUserByEmail(email: string) {
         return prismaClient.user.findUnique({ where: { email } })
     }
@@ -54,6 +57,16 @@ class UserService {
         const token = JWT.sign({ id: user.id, email: user.email }, JWT_SECRET)
         return token;
 
+    }
+
+    public static decodeJWTToken(token: string) {
+        try {
+            const decodedToken = JWT.verify(token, JWT_SECRET);
+            return decodedToken;
+        } catch (error) {
+            console.error('Error decoding token:', error);
+            throw new Error('Invalid token');
+        }
     }
 
 }
